@@ -10,7 +10,7 @@ import 'package:hexcolor/hexcolor.dart';
 import 'package:ionicons/ionicons.dart';
 
 class MeScreen extends StatelessWidget {
-
+//hello
   @override
   Widget build(BuildContext context) {
     return BlocConsumer<ShopAppCubit,ShopAppStates>(
@@ -90,24 +90,18 @@ class MeScreen extends StatelessWidget {
                         {
                           Navigat(context, purchasesScreen());
                         },
-                        child: InkWell(
-                          onTap: ()
-                          {
-                            Navigat(context, purchasesScreen());
-                          },
-                          child: Container(
-                            width: 160,
-                            height: 50,
-                            decoration: BoxDecoration(
-                                borderRadius: BorderRadiusDirectional.circular(15),
-                                color:  HexColor("d8e4de"),
-                                border: Border.all(
-                                    width: 1,
-                                    color: Colors.black
-                                )
-                            ),
-                            child: Center(child: Text("مشترياتك",style: TextStyle(fontSize: 20,fontWeight: FontWeight.bold,),)),
+                        child: Container(
+                          width: 160,
+                          height: 50,
+                          decoration: BoxDecoration(
+                              borderRadius: BorderRadiusDirectional.circular(15),
+                              color:  HexColor("d8e4de"),
+                              border: Border.all(
+                                  width: 1,
+                                  color: Colors.black
+                              )
                           ),
+                          child: Center(child: Text("مشترياتك",style: TextStyle(fontSize: 20,fontWeight: FontWeight.bold,),)),
                         ),
                       ),
                     ],

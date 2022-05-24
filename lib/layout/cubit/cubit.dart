@@ -384,6 +384,8 @@ class ShopAppCubit extends Cubit<ShopAppStates> {
           'INSERT INTO concaty(name, image, price,quantity) '
               'VALUES("${model.name}","${model.image}" ,"${model.price}" ,"${model.quantity}")'
       ).then((value) {
+        getDataTable(database);
+        emit(InsertTableSuccessState());
         print("Insert Success");
       });
     });
