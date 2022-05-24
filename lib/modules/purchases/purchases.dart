@@ -5,6 +5,7 @@ import 'package:concaty/modules/filtering/filtering_%D9%8DScreen.dart';
 import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:hexcolor/hexcolor.dart';
 
 class purchasesScreen extends StatelessWidget {
@@ -93,11 +94,12 @@ class purchasesScreen extends StatelessWidget {
                 condition: ShopAppCubit.get(context).shopdata.isNotEmpty
               , builder: (context)=> Expanded(
               child: ListView.separated(
+                physics: BouncingScrollPhysics(),
                   itemBuilder: (context, index) => bultItem(
                     ShopAppCubit.get(context).shopdata[index], context,),
                   separatorBuilder: (context, index) => Container(
-                    height: 3,
-                    color: Colors.black,
+                    height: 2,
+                    color: Colors.grey[400],
                   ),
                   itemCount: ShopAppCubit.get(context).shopdata.length),
             ),
@@ -114,7 +116,29 @@ class purchasesScreen extends StatelessWidget {
                 Text(
                     "لم يتم العثور على طلبات او حركات . يرجى تحديد مدة زمنية مختلفة او نوع طلب مختلف"),
               ],
-            ),)
+            ),),
+            if(ShopAppCubit.get(context).shopdata.isNotEmpty)
+               MaterialButton(
+                 onPressed: ()
+                 {
+                   Fluttertoast.showToast(
+                     msg: "تم ارسال الطلب",
+                     gravity: ToastGravity.BOTTOM,
+                     timeInSecForIosWeb: 5 ,
+                     backgroundColor: Colors.green,
+                     textColor: Colors.white,
+                     fontSize: 16.0,);
+                 }
+
+                 ,child: Container(
+                width: 140,
+                height: 50,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadiusDirectional.circular(15),
+                  color:  HexColor("e4dc19"),
+                ),
+
+                child: Center(child: Text("ADD",style: TextStyle(fontSize: 20, )))),)
 
           ],
         ),
@@ -123,94 +147,79 @@ class purchasesScreen extends StatelessWidget {
   }
 }
 
-Widget bultItem(ModelDatabase model, context) => Column(
-  crossAxisAlignment: CrossAxisAlignment.end,
-  children: [
-    SizedBox(
-      height: 10,
-    ),
-
-    Slidable(
-      child: Container(
-        width: double.infinity,
-        height: 150,
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: [
-            Image.network(
-              "${model.image}",
-              width: 150,
-              height: 100,
-              fit: BoxFit.cover,
-            ),
-            SizedBox(
-              width: 50,
-            ),
-            Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text(
-                  "${model.name}",
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
-                ),
-                SizedBox(
-                  height: 8,
-                ),
-                Text(
-                  "${model.price}",
-                  style: TextStyle(color: Colors.green),
-                ),
-                SizedBox(
-                  height: 20,
-                ),
-                Container(
-                  width: 110,
-                  height: 40,
-                  color: Colors.grey[300],
-                  child: Row(
-                    children: [
-                      IconButton(onPressed: () {}, icon: Icon(Icons.add)),
-                      Text("${model.quantity}"),
-                      IconButton(
-                          onPressed: () {}, icon: Icon(Icons.remove))
-                    ],
-                  ),
-                )
-              ],
-            )
-          ],
-        ),
-      ),
-      startActionPane: ActionPane(
-        motion: ScrollMotion(),
+Widget bultItem(ModelDatabase model, context) =>  Padding(
+  padding: const EdgeInsets.symmetric(
+    vertical: 15,
+  ),
+  child:   Slidable(
+    child: Container(
+      width: double.infinity,
+      height: 110,
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.start,
         children: [
-          SlidableAction(
-            onPressed: (value)
-            {
-              ShopAppCubit.get(context)
-                  .deleteDataTAble(model);
-            },
-            key: Key("${model.name}"),
-            backgroundColor: Color(0xFFFE4A49),
-            foregroundColor: Colors.white,
-            icon: Icons.delete,
-            label: 'Delete',
+          Image.network(
+            "${model.image}",
+            width: 150,
+            height: 100,
+            fit: BoxFit.cover,
           ),
-
+          SizedBox(
+            width: 50,
+          ),
+          Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text(
+                "${model.name}",
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+              ),
+              SizedBox(
+                height: 8,
+              ),
+              Text(
+                "${model.price}",
+                style: TextStyle(color: Colors.green),
+              ),
+              SizedBox(
+                height: 20,
+              ),
+              Container(
+                width: 110,
+                height: 40,
+                color: Colors.grey[300],
+                child: Row(
+                  children: [
+                    IconButton(onPressed: () {}, icon: Icon(Icons.add)),
+                    Text("${model.quantity}"),
+                    IconButton(
+                        onPressed: () {}, icon: Icon(Icons.remove))
+                  ],
+                ),
+              )
+            ],
+          )
         ],
       ),
-
     ),
+    startActionPane: ActionPane(
+      motion: ScrollMotion(),
+      children: [
+        SlidableAction(
+          onPressed: (value)
+          {
+            ShopAppCubit.get(context)
+                .deleteDataTAble(model);
+          },
+          key: Key("${model.name}"),
+          backgroundColor: Color(0xFFFE4A49),
+          foregroundColor: Colors.white,
+          icon: Icons.delete,
+          label: 'Delete',
+        ),
 
-    // SlidableAction(
-
-    //     onPressed: null,
-
-    //   icon: Icons.delete,
-
-    //
-
-    // )
-  ],
+      ],
+    ),
+  ),
 );
